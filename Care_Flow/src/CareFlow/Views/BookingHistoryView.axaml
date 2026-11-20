@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="CareFlow.Views.BookingHistoryView">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="32" Spacing="20">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="4"><TextBlock Text="Booking history" FontSize="28" FontWeight="Bold" Foreground="#18364B" /><TextBlock Text="Confirmed bookings and their diagnostic services" FontSize="14" Foreground="#718493" /></StackPanel>
+        <Button Grid.Column="1" Content="Refresh" Padding="16,9" Command="{Binding RefreshCommand}" />
+      </Grid>
+      <TextBlock Text="{Binding ErrorMessage}" IsVisible="{Binding HasErrorMessage}" Foreground="#AF4717" TextWrapping="Wrap" />
+      <Grid ColumnDefinitions="1.2*,0.8*" ColumnSpacing="18" MinHeight="460">
+        <Border Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="14" Padding="16">
+          <StackPanel Spacing="10">
+            <TextBlock Text="CONFIRMED BOOKINGS" FontSize="11" FontWeight="SemiBold" Foreground="#748896" />
+            <ListBox ItemsSource="{Binding Bookings}" SelectedItem="{Binding SelectedBooking, Mode=TwoWay}" MaxHeight="620">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <Border Padding="11,10" CornerRadius="8" Margin="0,0,0,5">
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="8">
+                      <TextBlock Text="{Binding PatientName}" FontWeight="SemiBold" Foreground="#18364B" />
+                      <TextBlock Grid.Column="1" Foreground="#087F8C" FontWeight="SemiBold"><Run Text="#" /><Run Text="{Binding BookingId}" /></TextBlock>
+                      <TextBlock Grid.Row="1" Text="{Binding BookingDate, StringFormat='{}{0:MMM d, yyyy}'}" FontSize="12" Foreground="#718493" />
+                      <TextBlock Grid.Row="1" Grid.Column="1" FontSize="12" Foreground="#718493"><Run Text="{Binding ServiceCount}" /><Run Text=" services" /></TextBlock>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock Text="No confirmed bookings yet." IsVisible="{Binding HasNoBookings}" Foreground="#718493" />
+          </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="14" Padding="22" IsVisible="{Binding HasSelectedBooking}">
+          <StackPanel Spacing="15">
+            <TextBlock Text="BOOKING DETAILS" FontSize="11" FontWeight="SemiBold" Foreground="#748896" />
+            <TextBlock Text="{Binding SelectedBooking.PatientName}" FontSize="20" FontWeight="Bold" Foreground="#18364B" />
+            <TextBlock Foreground="#587080"><Run Text="Booking #" /><Run Text="{Binding SelectedBooking.BookingId}" /></TextBlock>
+            <TextBlock Text="{Binding SelectedBooking.BookingDate, StringFormat='{}{0:MMMM d, yyyy}'}" Foreground="#587080" />
+            <Border Height="1" Background="#E2EAF0" />
+            <TextBlock Text="Diagnostic services" FontSize="14" FontWeight="SemiBold" Foreground="#18364B" />
+            <ItemsControl ItemsSource="{Binding ServiceNames}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate><Border Background="#F1F7F9" CornerRadius="8" Padding="12,10" Margin="0,0,0,7"><TextBlock Text="{Binding}" Foreground="#284A5D" /></Border></DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+        <Border Grid.Column="1" Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="14" Padding="22" IsVisible="{Binding HasNoSelectedBooking}">
+          <TextBlock Text="Select a booking to view its services." Foreground="#718493" TextWrapping="Wrap" VerticalAlignment="Center" />
+        </Border>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

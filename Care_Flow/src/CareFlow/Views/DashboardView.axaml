@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="CareFlow.Views.DashboardView">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="32" Spacing="22">
+      <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+        <StackPanel Spacing="4">
+          <TextBlock Text="Department overview" FontSize="28" FontWeight="Bold" Foreground="#18364B" />
+          <TextBlock Text="Diagnostic service capacity and booking activity" FontSize="14" Foreground="#718493" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Spacing="5">
+          <TextBlock Text="Availability date" FontSize="12" FontWeight="SemiBold" Foreground="#486171" />
+          <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" Width="190" />
+        </StackPanel>
+      </Grid>
+
+      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="16">
+        <Border Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="14" Padding="20">
+          <StackPanel Spacing="7"><TextBlock Text="EXISTING PATIENTS" FontSize="11" FontWeight="SemiBold" Foreground="#748896" /><TextBlock Text="{Binding PatientCount}" FontSize="30" FontWeight="Bold" Foreground="#18364B" /></StackPanel>
+        </Border>
+        <Border Grid.Column="1" Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="14" Padding="20">
+          <StackPanel Spacing="7"><TextBlock Text="DIAGNOSTIC SERVICES" FontSize="11" FontWeight="SemiBold" Foreground="#748896" /><TextBlock Text="{Binding ServiceCount}" FontSize="30" FontWeight="Bold" Foreground="#18364B" /></StackPanel>
+        </Border>
+        <Border Grid.Column="2" Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="14" Padding="20">
+          <StackPanel Spacing="7"><TextBlock Text="CONFIRMED BOOKINGS" FontSize="11" FontWeight="SemiBold" Foreground="#748896" /><TextBlock Text="{Binding BookingCount}" FontSize="30" FontWeight="Bold" Foreground="#087F8C" /></StackPanel>
+        </Border>
+      </Grid>
+
+      <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+        <StackPanel Spacing="3"><TextBlock Text="Service availability" FontSize="20" FontWeight="Bold" Foreground="#18364B" /><TextBlock Text="Capacity is based on confirmed bookings for the selected date." FontSize="13" Foreground="#718493" /></StackPanel>
+        <Button Grid.Column="1" Content="Refresh" Command="{Binding RefreshCommand}" Padding="16,9" />
+      </Grid>
+
+      <TextBlock Text="{Binding ErrorMessage}" IsVisible="{Binding HasErrorMessage}" Foreground="#AF4717" TextWrapping="Wrap" />
+
+      <ItemsControl ItemsSource="{Binding Services}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="13" Padding="18" Margin="0,0,0,10">
+              <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="24" VerticalAlignment="Center">
+                <StackPanel Spacing="5">
+                  <TextBlock Text="{Binding ServiceName}" FontSize="16" FontWeight="SemiBold" Foreground="#18364B" />
+                  <TextBlock Text="{Binding Description}" FontSize="12" Foreground="#718493" TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Spacing="4" HorizontalAlignment="Center">
+                  <TextBlock Text="CONFIRMED / CAPACITY" FontSize="10" Foreground="#748896" HorizontalAlignment="Center" />
+                  <TextBlock FontSize="14" Foreground="#355368" HorizontalAlignment="Center"><Run Text="{Binding ConfirmedBookings}" /><Run Text=" / " /><Run Text="{Binding DailyCapacity}" /></TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Spacing="4" MinWidth="150" HorizontalAlignment="Right">
+                  <TextBlock Text="{Binding Status}" Foreground="{Binding StatusBrush}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Right" />
+                  <TextBlock HorizontalAlignment="Right" Foreground="#18364B"><Run Text="{Binding RemainingCapacity}" /><Run Text=" remaining" /></TextBlock>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

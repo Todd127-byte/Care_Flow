@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="CareFlow.Views.BookingView">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="32" Spacing="20">
+      <StackPanel Spacing="4">
+        <TextBlock Text="Create a diagnostic booking" FontSize="28" FontWeight="Bold" Foreground="#18364B" />
+        <TextBlock Text="Choose a patient, booking date, and up to three services." FontSize="14" Foreground="#718493" />
+      </StackPanel>
+
+      <Border Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="14" Padding="22">
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="20">
+          <StackPanel Spacing="8">
+            <TextBlock Text="PATIENT" FontSize="11" FontWeight="SemiBold" Foreground="#587080" />
+            <ComboBox ItemsSource="{Binding Patients}" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" PlaceholderText="Select an existing patient" MinHeight="42">
+              <ComboBox.ItemTemplate>
+                <DataTemplate><TextBlock Text="{Binding FullName}" /></DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </StackPanel>
+          <StackPanel Grid.Column="1" Spacing="8">
+            <TextBlock Text="BOOKING DATE" FontSize="11" FontWeight="SemiBold" Foreground="#587080" />
+            <DatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" MinHeight="42" />
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+        <StackPanel Spacing="3"><TextBlock Text="Diagnostic services" FontSize="20" FontWeight="Bold" Foreground="#18364B" /><TextBlock Text="Availability is checked again when you confirm." FontSize="13" Foreground="#718493" /></StackPanel>
+        <Border Grid.Column="1" Background="#E6F5F5" CornerRadius="10" Padding="12,8"><TextBlock Foreground="#087F8C" FontWeight="SemiBold"><Run Text="{Binding SelectedServiceCount}" /><Run Text=" / 3 selected" /></TextBlock></Border>
+      </Grid>
+
+      <ItemsControl ItemsSource="{Binding Services}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Background="White" BorderBrush="#E2EAF0" BorderThickness="1" CornerRadius="12" Padding="16" Margin="0,0,0,9">
+              <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14" VerticalAlignment="Center">
+                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsAvailable}" VerticalAlignment="Center" />
+                <StackPanel Grid.Column="1" Spacing="4">
+                  <TextBlock Text="{Binding ServiceName}" FontSize="15" FontWeight="SemiBold" Foreground="#18364B" />
+                  <TextBlock Text="{Binding Description}" FontSize="12" Foreground="#718493" TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Spacing="3" HorizontalAlignment="Right" MinWidth="130">
+                  <TextBlock Text="{Binding Status}" Foreground="{Binding StatusBrush}" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Right" />
+                  <TextBlock HorizontalAlignment="Right" FontSize="12" Foreground="#587080"><Run Text="{Binding RemainingCapacity}" /><Run Text=" of " /><Run Text="{Binding DailyCapacity}" /><Run Text=" remaining" /></TextBlock>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <TextBlock Text="{Binding ErrorMessage}" IsVisible="{Binding HasErrorMessage}" Foreground="#AF4717" TextWrapping="Wrap" />
+      <Border Background="#E8F6F1" BorderBrush="#C5E8D9" BorderThickness="1" CornerRadius="10" Padding="14" IsVisible="{Binding HasConfirmationMessage}">
+        <TextBlock Text="{Binding ConfirmationMessage}" Foreground="#176B50" TextWrapping="Wrap" />
+      </Border>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+        <Button Content="Clear form" Command="{Binding ResetCommand}" Padding="18,10" />
+        <Button Content="Confirm booking" Command="{Binding ConfirmBookingCommand}" IsEnabled="{Binding CanConfirm}" Background="#087F8C" Foreground="White" Padding="22,10" FontWeight="SemiBold" />
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
